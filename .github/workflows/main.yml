@@ -1,0 +1,27 @@
+name: Ejecutar asistencia
+
+on:
+  schedule:
+    - cron: '0 * * * 1-5'  # Ejecutar cada hora de lunes a viernes
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'  # Usar la versión de Node.js que necesitas
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run attendance script
+        env:
+          URL: ${{ secrets.URL }}
+          RUT: ${{ secrets.RUT }}
+        run: node index.js
