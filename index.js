@@ -39,13 +39,26 @@ async function recordAttendance(type, rut) {
   await browser.close();
 }
 
+function getCurrentType() {
+  const currentTimeInChile = new Date().toLocaleString("en-US", { timeZone: "America/Santiago" });
+  const currentDateChile = new Date(currentTimeInChile);
+  const currentHour = currentDateChile.getHours();
+
+  if (currentHour === 9) {
+    return 'entrada';
+  } else if (currentHour === 18) {
+    return 'salida';
+  } else {
+    return null;
+  }
+}
+
 function isHoliday() {
   const today = new Date().toISOString().split('T')[0];
   return holidays.includes(today);
 }
 
-const type = process.argv[2];
-const rut = process.argv[3];
+const rut = process.env.RUT;
 
 if (isHoliday()) {
   console.log(
@@ -56,16 +69,11 @@ if (isHoliday()) {
   process.exit(0);
 }
 
-if (type !== 'entrada' && type !== 'salida') {
-  console.error('Error: Debes pasar "entrada" o "salida" como argumento.');
-  process.exit(1);
+const type = getCurrentType();
+if (!type) {
+  console.log(`No es la hora correcta para ejecutar ninguna acción.`);
+  process.exit(0);
 }
-
-rut.split("").forEach(char => {
-  if (isNaN(parseInt(char)) && char !== '-' && char.toLowerCase() !== 'k') {
-    throw new Error('El RUT debe contener solo números y guiones.');
-  }
-});
 
 const timestamp = new Date().toISOString();
 recordAttendance(type, rut)

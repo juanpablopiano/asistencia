@@ -1,5 +1,7 @@
 // Holiday list with format YYYY-MM-DD
 export default [
+  '2024-09-16',
+  '2024-09-17',
   '2024-09-18',
   '2024-09-19',
   '2024-09-20',

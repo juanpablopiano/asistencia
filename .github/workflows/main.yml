@@ -2,8 +2,7 @@ name: Ejecutar asistencia
 
 on:
   schedule:
-    - cron: '0 9 * * 1-5'  # Ejecutar de lunes a viernes a las 9:00 AM (UTC)
-    - cron: '0 18 * * 1-5' # Ejecutar de lunes a viernes a las 6:00 PM (UTC)
+    - cron: '0 * * * 1-5'  # Ejecutar cada hora de lunes a viernes
 
 jobs:
   build:
@@ -25,4 +24,4 @@ jobs:
         env:
           URL: ${{ secrets.URL }}
           RUT: ${{ secrets.RUT }}
-        run: node index.js entrada ${{ secrets.RUT }}
+        run: node index.js
